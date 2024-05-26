@@ -1,11 +1,12 @@
-import requests
+from flask import Flask, render_template
 from bs4 import BeautifulSoup
+import requests
 import pprint
 
 
 def create_myhn():
     hn = []
-    for s in range(10):
+    for s in range(1):
         res = requests.get("https://news.ycombinator.com/news?p={s}")
         soup = BeautifulSoup(res.text, 'html.parser')
         links = soup.select('.titleline > a')
@@ -23,4 +24,13 @@ def create_myhn():
     return hn
 
 
-pprint.pprint(create_myhn())
+input = create_myhn()
+
+# app = Flask(__name__)
+# @app.route("/")
+# def index(inp = None):
+#     return render_template('index.html', list = inp)
+
+# index(input)
+
+pprint.pprint(sorted(create_myhn(), key=lambda k: k['points'], reverse=True))
